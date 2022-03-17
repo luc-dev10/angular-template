@@ -1,7 +1,21 @@
 <form #emailForm="ngForm">
-  <input name="email" type="email" [(ngModel)]="email" />
+  <input
+    type="email"
+    pattern=".+@.+\..+"
+    required
+    name="email"
+    [(ngModel)]="email"
+    #userEmail="ngModel"
+  />
+  <ng-container *ngIf="!userEmail.valid && userEmail.touched">
+    <div *ngIf="userEmail.hasError('required')" style="color: red">
+      *Required
+    </div>
+    <div *ngIf="userEmail.hasError('pattern')" style="color: red">*Pattern</div>
+  </ng-container>
 </form>
 
-{{ emailForm.valid }}
-{{ emailForm.value | json }}
-{{ email }}
+<div>Is Valid: {{ emailForm.valid }}</div>
+<div>Value of object: {{ emailForm.value | json }}</div>
+<div>Email Value: {{ email }}</div>
+<div>Error Messages: {{ userEmail.errors | json }}</div>
